@@ -4,5 +4,5 @@ from boards import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('homepage/', views.home, name='home')
+    path('', views.home, name='home')
 ]
