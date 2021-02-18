@@ -34,5 +34,5 @@ urlpatterns = [
     path('settings/password/done/', auth_views.PasswordChangeDoneView.as_view(template_name='password_change_done.html'),
         name='password_change_done'),
     path('boards/<pk>/topics/<topic_pk>/', views.topic_posts, name='topic_posts'),
-
+    path('boards/<pk>/topics/<topic_pk>/reply/', views.reply_topic, name='reply_topic'),
 ]
