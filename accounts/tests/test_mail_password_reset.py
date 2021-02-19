@@ -7,17 +7,14 @@ from django.test import TestCase
 class PasswordResetMailTests(TestCase):
     
     def setUp(self):
-        import ipdb;ipdb.set_trace()
-        self.user = User.objects.create_user(username='john', email='john@doe.com', password='123')
-        self.url = reverse('password_reset')
-        self.response = self.client.post(self.url, { 'email': self.user.email })
+        User.objects.create_user(username='john', email='john@doe.com', password='123')
+        self.response = self.client.post(reverse('password_reset'), {'email': 'john@doe.com'})
         self.email = mail.outbox[0]
 
     def test_email_subject(self):
         self.assertEqual('[Django Boards] Please reset your password', self.email.subject)
 
     def test_email_body(self):
-        import ipdb;ipdb.set_trace()
         context = self.response.context
         token = context.get('token')
         uid = context.get('uid')

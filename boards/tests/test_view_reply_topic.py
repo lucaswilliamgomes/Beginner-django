@@ -17,16 +17,3 @@ class ReplyTopicTestCase(TestCase):
         self.topic = Topic.objects.create(subject='Hello, world', board=self.board, starter=user)
         Post.objects.create(message='Lorem ipsum dolor sit amet', topic=self.topic, created_by=user)
         self.url = reverse('reply_topic', kwargs={'pk': self.board.pk, 'topic_pk': self.topic.pk})
-
-
-class LoginRequiredReplyTopicTests(ReplyTopicTestCase):
-    # ...
-
-class ReplyTopicTests(ReplyTopicTestCase):
-    # ...
-
-class SuccessfulReplyTopicTests(ReplyTopicTestCase):
-    # ...
-
-class InvalidReplyTopicTests(ReplyTopicTestCase):
-    # ... 

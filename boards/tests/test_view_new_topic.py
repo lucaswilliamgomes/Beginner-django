@@ -11,9 +11,10 @@ class NewTopicTests(TestCase):
     def setUp(self):
         self.board = Board.objects.create(name='Django', description='Django board.')
         self.user =  User.objects.create_user(username='john', email='john@doe.com', password='123')
+        login = self.client.login(username=self.user.username, password='123') 
 
     def test_new_topic_view_sucess_status_code(self):
-        url = reverse(new_topic, kwargs={'pk': self.board.pk})
+        url = reverse('new_topic', kwargs={'pk': self.board.pk})
         response = self.client.get(url)
         self.assertEquals(response.status_code, 200)
 
@@ -43,14 +44,9 @@ class NewTopicTests(TestCase):
             'subject': 'Test title',
             'message': 'Lorem ipsum dolor sit amet'
         }
-        response = self.client.post(url, data)
+        self.client.post(url, data)
         self.assertTrue(Topic.objects.exists())
         self.assertTrue(Post.objects.exists())
-
-    def test_new_topic_invalid_post_data(self):
-        url = reverse('new_topic', kwargs={'pk': self.board.pk})
-        response = self.client.post(url, {})
-        self.assertEquals(response.status_code, 200)
 
     def test_new_topic_invalid_post_data_empty_fields(self):
         url = reverse('new_topic', kwargs={'pk': self.board.pk})
@@ -63,7 +59,7 @@ class NewTopicTests(TestCase):
         self.assertFalse(Topic.objects.exists())
         self.assertFalse(Post.objects.exists())
 
-    def test_contains_form(self):
+    def test_contains_form(self): 
         url = reverse('new_topic', kwargs={'pk': self.board.pk})
         response = self.client.get(url)
         form = response.context.get('form')
@@ -81,7 +77,7 @@ class LoginRequiredNewTopicTests(TestCase):
 
     def setUp(self):
         self.board = Board.objects.create(name='Django', description='Django board.')
-        self.url = reverse('new_topic', kwargs={'pk', self.board.pk})
+        self.url = reverse('new_topic', kwargs={'pk': self.board.pk})
         self.response = self.client.get(self.url)
 
     def test_redirection(self):
