@@ -9,5 +9,3 @@ class SignUpFormTest(TestCase):
         expected = ['username', 'email', 'password1', 'password2',]
         actual = list(form.fields)
         self.assertSequenceEqual(expected, actual)
-
-        
