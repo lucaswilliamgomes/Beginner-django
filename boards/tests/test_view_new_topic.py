@@ -59,7 +59,7 @@ class NewTopicTests(TestCase):
         self.assertFalse(Topic.objects.exists())
         self.assertFalse(Post.objects.exists())
 
-    def test_contains_form(self): 
+    def test_contains_form(self):
         url = reverse('new_topic', kwargs={'pk': self.board.pk})
         response = self.client.get(url)
         form = response.context.get('form')
