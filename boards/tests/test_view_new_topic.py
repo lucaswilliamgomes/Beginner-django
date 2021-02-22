@@ -3,7 +3,7 @@ from django.urls import resolve, reverse
 from django.contrib.auth.models import User
 from ..forms import NewTopicForm
 from ..models import Board, Topic, Post
-from ..views import home, new_topic, board_topics
+from ..views import BoardListView, new_topic, TopicListView
 
 
 class NewTopicTests(TestCase):

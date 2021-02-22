@@ -40,7 +40,7 @@ class UnauthorizedPostUpdateViewTests(PostUpdateViewTestCase):
         '''
         Create a new user different from the one who posted
         '''
-        super().setUp()
+        super().setUp() 
         username = 'jane'
         password = '321'
         user = User.objects.create_user(username=username, email='jane@doe.com', password=password)
