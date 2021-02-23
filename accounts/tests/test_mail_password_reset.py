@@ -12,6 +12,7 @@ class PasswordResetMailTests(TestCase):
             'email': 'john@doe.com'
         }
         self.response = self.client.post(reverse('password_reset'), data)
+        self.email = mail.outbox[0]
 
     def test_email_subject(self):
         self.assertEqual('[Django Boards] Please reset your password', self.email.subject)
