@@ -15,8 +15,9 @@ class BoardListView(ListView):
     model = Board
     context_object_name = 'boards'
     template_name = 'home.html'
-    
-    
+
+
+@method_decorator(login_required, name='dispatch')
 class TopicListView(ListView):  
     model = Topic
     context_object_name = 'topics'
@@ -58,7 +59,7 @@ class PostListView(ListView):
     model = Post
     context_object_name = 'posts'
     template_name = 'topic_posts.html'
-    paginate_by = 2
+    paginate_by = 20
 
     def get_context_data(self, **kwargs):  ###
         self.topic.views += 1
@@ -82,10 +83,12 @@ def reply_topic(request, pk, topic_pk):
             post.topic = topic
             post.created_by = request.user
             post.save()
+            topic.last_updated = timezone.now()
+            topic.save()
             return redirect('topic_posts', pk=pk, topic_pk=topic_pk)
     else:
         form = PostForm()
-    return render(request, 'reply_topic.html', {'topic': topic, 'form': form})  
+    return render(request, 'reply_topic.html', {'topic': topic, 'form': form})
 
 
 @method_decorator(login_required, name='dispatch')
@@ -106,14 +109,3 @@ class PostUpdateView(UpdateView):
         post.updated_at = timezone.now()
         post.save()
         return redirect('topic_posts', pk=post.topic.board.pk, topic_pk=post.topic.pk)
-
-
-@method_decorator(login_required, name='dispatch')
-class UserUpdateView(UpdateView):
-    model = User 
-    fields = ('first_name', 'last_name', 'email', )
-    template_name = 'my_account.html'
-    success_url = reverse_lazy('my_account')
-
-    def get_object(self):
-        return self.request.user
