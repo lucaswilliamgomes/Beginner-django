@@ -24,11 +24,11 @@ class TopicListView(ListView):
     template_name = 'topics.html'
     paginate_by = 20
 
-    def get_context_data(self, **kwargs): ###
+    def get_context_data(self, **kwargs):
         kwargs['board'] = self.board
         return super().get_context_data(**kwargs)
 
-    def get_queryset(self):  ###
+    def get_queryset(self):
         self.board = get_object_or_404(Board, pk=self.kwargs.get('pk'))
         queryset = self.board.topics.order_by('-last_updated').annotate(replies=Count('posts') - 1)
         return queryset
@@ -61,7 +61,7 @@ class PostListView(ListView):
     template_name = 'topic_posts.html'
     paginate_by = 20
 
-    def get_context_data(self, **kwargs):  ###
+    def get_context_data(self, **kwargs):
         self.topic.views += 1
         self.topic.save()
         kwargs['topic'] = self.topic

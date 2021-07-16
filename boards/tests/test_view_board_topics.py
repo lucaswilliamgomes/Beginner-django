@@ -2,12 +2,15 @@ from django.test import TestCase
 from django.urls import resolve, reverse
 from ..models import Board
 from ..views import TopicListView
+from django.contrib.auth.models import User
 
 
 class BoardTopicsTests(TestCase):
 
     def setUp(self):
         self.board = Board.objects.create(name='Python', description='Python Board')
+        self.user =  User.objects.create_user(username='john', email='john@doe.com', password='123')
+        login = self.client.login(username=self.user.username, password='123') 
 
     def test_board_topics_view_sucess_status_code(self):
         url = reverse('board_topics', kwargs={'pk': self.board.pk})
